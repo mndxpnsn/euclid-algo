@@ -16,7 +16,7 @@ typedef struct Triple {
 } triple_t;
 
 
-triple_t F(long a, long b) {
+triple_t F_rec(long a, long b) {
 
     triple_t res = {0, 0, 0};
 
@@ -25,7 +25,7 @@ triple_t F(long a, long b) {
     }
 
     if(a > 0) {
-        triple_t triple_loc = F(b % a, a);
+        triple_t triple_loc = F_rec(b % a, a);
         long c = triple_loc.gcd;
         long x = triple_loc.x;
         long y = triple_loc.y;
@@ -36,9 +36,9 @@ triple_t F(long a, long b) {
     return res;
 }
 
-triple_t F_wrap(long a, long b) {
+triple_t F(long a, long b) {
 
-    triple_t res = a < b ? F(a, b) : F(b, a);
+    triple_t res = a < b ? F_rec(a, b) : F_rec(b, a);
 
     if(a > b) {
         long tmp = res.x;
@@ -51,10 +51,10 @@ triple_t F_wrap(long a, long b) {
 
 int main(int argc, char * argv[]) {
 
-    long a = 27;
-    long b = 111;
+    long a = 1270;
+    long b = 1000;
 
-    triple_t res = F_wrap(a, b);
+    triple_t res = F(a, b);
 
     cout << "c: " << res.gcd << ", x: " << res.x << ", y: " << res.y << endl;
     cout << "ax + by: " << (a * res.x + b * res.y) << endl;
